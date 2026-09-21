@@ -1,0 +1,2 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{fn as t,pn as n}from"./control-ui-core-CaKBexnk.js";function r(e){return e instanceof t&&e.gatewayCode===`INVALID_REQUEST`&&e.message.includes(`unknown method: system.info`)}function i(e){return e?.features?.methods?.includes(`system.info`)===!0}function a(){return(a=e((()=>{n()})))()}export{r as n,i as r,a as t};
+//# sourceMappingURL=system-info-DnHf78J4.js.map

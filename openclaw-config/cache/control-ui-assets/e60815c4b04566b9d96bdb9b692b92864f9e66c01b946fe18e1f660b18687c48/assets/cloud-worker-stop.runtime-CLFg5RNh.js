@@ -1,0 +1,2 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{Bt as t,Gt as n}from"./control-ui-core-uEI6aN5p.js";import{$u as r,Zu as i,qu as a}from"./control-ui-boot-shared-CH-OC11d.js";async function o(e,t,r){r.pause(t.key,n(`sessionsView.initialTurnPausedByWorkerStop`),s),await e.request(`sessions.reclaim`,{key:t.key,...t.agentId?{agentId:t.agentId}:{}},{timeoutMs:null})}var s;function c(){return(c=e((()=>{t(),a(),s={readSessionPlacementRecovery:r,pauseSessionPlacementRecovery:i}})))()}export{o as n,c as t};
+//# sourceMappingURL=cloud-worker-stop.runtime-CLFg5RNh.js.map

@@ -1,0 +1,1 @@
+import{a as e,i as t}from"./control-ui-boot-chat-B0K1m2J4.js";t();export{e as loadChatRoute};

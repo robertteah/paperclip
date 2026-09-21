@@ -1,0 +1,11 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{K as t,X as n,q as r}from"./lit-runtime-vxhGQLC6.js";import{Bt as i,Gt as a}from"./control-ui-core-uEI6aN5p.js";function o(e){let t=new Map;for(let e of s)t.set(e.id,{id:e.id,label:a(e.labelKey),skills:[]});let n=s.find(e=>e.id===`built-in`),r={id:`other`,label:a(`skillGroups.other`),skills:[]};for(let i of e){let e=i.bundled?n:s.find(e=>e.sources.includes(i.source));e?t.get(e.id)?.skills.push(i):r.skills.push(i)}let i=s.map(e=>t.get(e.id)).filter(e=>!!(e&&e.skills.length>0));return r.skills.length>0&&i.push(r),i}var s;function c(){return(c=e((()=>{i(),s=[{id:`workspace`,labelKey:`skillGroups.workspace`,sources:[`openclaw-workspace`]},{id:`built-in`,labelKey:`skillGroups.builtIn`,sources:[`openclaw-bundled`]},{id:`installed`,labelKey:`skillGroups.installed`,sources:[`openclaw-managed`]},{id:`extra`,labelKey:`skillGroups.extra`,sources:[`openclaw-extra`]}]})))()}function l(e){return[...e.missing.bins.map(e=>`bin:${e}`),...e.missing.anyBins.length>0?[`bin:any of (${e.missing.anyBins.join(`, `)})`]:[],...e.missing.env.map(e=>`env:${e}`),...e.missing.config.map(e=>`config:${e}`),...e.missing.os.map(e=>`os:${e}`)]}function u(e){let t=[];return e.disabled&&t.push(a(`skillStatus.disabled`)),e.blockedByAllowlist&&t.push(a(`skillStatus.blockedAllowlist`)),e.blockedByAgentFilter&&t.push(a(`skillStatus.blockedAgentFilter`)),t}function d(e){return e.eligible&&!e.blockedByAgentFilter}function f(e){let t=e.skill,i=d(t),o=!!e.showBundledBadge;return n`
+    <div class="chip-row" style="margin-top: 6px;">
+      <span class="chip">${t.source}</span>
+      ${o?n` <span class="chip">${a(`skillStatus.bundled`)}</span> `:r}
+      <span class="chip ${i?`chip-ok`:`chip-warn`}">
+        ${a(i?`skillStatus.eligible`:`skillStatus.blocked`)}
+      </span>
+      ${t.disabled?n` <span class="chip chip-warn">${a(`skillStatus.disabled`)}</span> `:r}
+    </div>
+  `}function p(){return(p=e((()=>{t(),i()})))()}export{f as a,d as i,u as n,o,p as r,c as s,l as t};
+//# sourceMappingURL=skills-shared-D-UakUtb.js.map

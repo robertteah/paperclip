@@ -1,0 +1,81 @@
+services:
+  # --- PAPERCLIP SERVICES ---
+  paperclip:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - USER_UID=${USER_UID:-1000}
+        - USER_GID=${USER_GID:-1000}
+    container_name: paperclip-server
+    restart: unless-stopped
+    pids_limit: 2048
+    ports:
+      - "3100:3100"
+    environment:
+      # Hardcoded the valid string format block inside compose so drivers read it cleanly
+      - DATABASE_URL=postgres://paperclip:paperclip@paperclip-db:5432/paperclip
+      - HOST=0.0.0.0
+      - PORT=3100
+      - SERVE_UI=true
+      - PAPERCLIP_DEPLOYMENT_MODE=authenticated
+      - PAPERCLIP_DEPLOYMENT_EXPOSURE=private
+      - PAPERCLIP_PUBLIC_URL=${PAPERCLIP_PUBLIC_URL:-http://localhost:3100}
+      - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
+      - PAPERCLIP_TOOL_ACTION_SIGNING_SECRET=${PAPERCLIP_TOOL_ACTION_SIGNING_SECRET}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENCODE_API_KEY=${OPENCODE_API_KEY}
+      - OLLAMA_API_KEY=${OLLAMA_API_KEY}
+    volumes:
+      - paperclip-data:/paperclip
+    depends_on:
+      paperclip-db:
+        condition: service_healthy
+
+  paperclip-db:
+    image: postgres:17-alpine
+    container_name: paperclip-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: paperclip
+      POSTGRES_DB: paperclip
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U paperclip -d paperclip"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+
+  # --- OPENCLAW SERVICES ---
+  openclaw-gateway:
+    image: openclaw/openclaw:latest
+    container_name: openclaw-gateway
+    restart: unless-stopped
+    ports:
+      - "18789:18789"
+    environment:
+      - NODE_ENV=production
+      - OPENCLAW_ALLOWED_ORIGINS=*
+      - GATEWAY_MODE=local
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENCLAW_GATEWAY_TOKEN=DTx6Ot6inDGm4y5OfCieX8F3mt69J6hrI/XmIxhKt7I=
+      - OPENCODE_API_KEY=${OPENCODE_API_KEY}
+      - OLLAMA_API_KEY=cfaf5f2b1b744e28b89d705b042871ec
+
+    # Explicitly passes the bypass flags straight into the binary launcher core
+    command: [ "node", "openclaw.mjs", "gateway", "--allow-unconfigured" ]
+
+    volumes:
+      - ./openclaw-config:/home/node/.openclaw
+      - ./openclaw-workspace:/home/node/openclaw/workspace
+    depends_on:
+      - paperclip
+
+volumes:
+  paperclip-data:
+  pgdata:
+
