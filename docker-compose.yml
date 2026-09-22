@@ -1,12 +1,7 @@
 services:
   # --- PAPERCLIP SERVICES ---
   paperclip:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - USER_UID=${USER_UID:-1000}
-        - USER_GID=${USER_GID:-1000}
+    image: ghcr.io/robertteah/paperclip:latest
     container_name: paperclip-server
     restart: unless-stopped
     pids_limit: 2048

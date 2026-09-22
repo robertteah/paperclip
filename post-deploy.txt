@@ -1,0 +1,8 @@
+The post-deploy SSH command is two lines:
+
+docker compose -f /opt/paperclip/docker-compose.production.yml --env-file /opt/paperclip/.env pull
+
+docker compose -f /opt/paperclip/docker-compose.production.yml --env-file /opt/paperclip/.env up -d
+
+
+pull fetches the new image from GHCR, up -d recreates the container with the new image and leaves Postgres untouched. Compose handles the rolling restart.
