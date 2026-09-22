@@ -35,7 +35,7 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository_owner }}/paperclip:${{ steps.vars.outputs.sha }}
             ghcr.io/${{ github.repository_owner }}/paperclip:latest
-
+      
       - name: Deploy to VPS via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -48,10 +48,10 @@ jobs:
             if [ ! -d ".git" ]; then
               git clone -b production https://github.com/robertteah/paperclip.git .
             else
-             git fetch origin production
-             git checkout production
-             git pull origin production
-           fi 
-           echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-           docker compose -f docker-compose.yml pull
-           docker compose -f docker-compose.yml up -d
+              git fetch origin production
+              git checkout production
+              git pull origin production
+            fi
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker compose -f docker-compose.yml pull
+            docker compose -f docker-compose.yml up -d  
