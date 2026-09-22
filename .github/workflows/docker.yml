@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write # Grants GITHUB_TOKEN permission to publish/write to GHCR
+      packages: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -35,7 +36,7 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository_owner }}/paperclip:${{ steps.vars.outputs.sha }}
             ghcr.io/${{ github.repository_owner }}/paperclip:latest
-      
+
       - name: Deploy to VPS via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -52,6 +53,6 @@ jobs:
               git checkout production
               git pull origin production
             fi
-            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker compose -f docker-compose.yml pull
-            docker compose -f docker-compose.yml up -d  
+            docker compose -f docker-compose.yml up -d --remove-orphans
