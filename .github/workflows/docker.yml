@@ -43,10 +43,15 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
+            mkdir -p /opt/paperclip
             cd /opt/paperclip
+            if [ ! -d ".git" ]; then
+              git clone -b production https://github.com/robertteah/paperclip.git .
+            else
             git fetch origin production
             git checkout production
             git pull origin production
-            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            docker compose -f docker-compose.yml pull
-            docker compose -f docker-compose.yml up -d
+          fi 
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          docker compose -f docker-compose.yml pull
+          docker compose -f docker-compose.yml up -d
