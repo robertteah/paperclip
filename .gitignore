@@ -21,6 +21,8 @@ data/
 .pnpm-store/
 tmp-*
 cli/tmp/
+openclaw-config/agents/
+openclaw-config/state/
 
 # Scratch/seed scripts (but not scripts/ dir)
 check-*.mjs
@@ -79,3 +81,4 @@ tests/storybook-visual/playwright-report/
 .env.local
 test-results/
 openclaw-config/workspace/
+.deploy-history
