@@ -53,21 +53,14 @@ jobs:
           script: |
             mkdir -p /opt/paperclip
             cd /opt/paperclip
-            if [ ! -d ".git" ]; then
-              git clone -b production https://github.com/robertteah/paperclip.git .
-            else
-              git fetch origin production
-              git checkout production
-              git pull origin production
-            fi
 
-            # Inject runtime secrets to .env before starting containers
-            if [ -n "$ENV_FILE" ]; then
-              echo "$ENV_FILE" > .env
-              chmod 600 .env
-            fi
+            # Inject .env file
+            echo "$ENV_FILE" > .env
+            chmod 600 .env
 
-            chmod +x deploy/vps-deploy.sh
-            ./deploy/vps-deploy.sh "$DEPLOY_TAG"
+            # Authenticate to GHCR
+            echo "$GHCR_PAT" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
 
-
+            # Pull and restart container
+            docker compose pull
+            docker compose up -d
