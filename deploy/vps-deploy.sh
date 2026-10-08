@@ -31,8 +31,8 @@ export PAPERCLIP_IMAGE_TAG="$TAG"
 : "${GHCR_USER:?GHCR_USER must be set}"
 echo "$GHCR_PAT" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
 
-docker compose -f docker-compose.yml pull
-docker compose -f docker-compose.yml up -d --remove-orphans
+docker compose -f docker-compose.production.yml pull
+docker compose -f docker-compose.production.yml up -d --remove-orphans
 
 echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) $TAG" >> "$HISTORY_FILE"
 echo "Deployed ghcr.io/robertteah/paperclip:$TAG"
