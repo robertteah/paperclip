@@ -62,5 +62,5 @@ jobs:
             echo "$GHCR_PAT" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
 
             # Pull and restart container
-            docker compose pull
-            docker compose up -d
+            docker compose -f docker-compose.production.yml pull
+            docker compose -f docker-compose.production up -d
