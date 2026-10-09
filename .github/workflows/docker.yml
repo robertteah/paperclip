@@ -53,10 +53,20 @@ jobs:
           script: |
             mkdir -p /opt/paperclip
             cd /opt/paperclip
+ 
+            # Pull latest git changes to get docker-compose.production.yml
+            if [ ! -d ".git" ]; then
+              git clone -b production https://github.com/robertteah/paperclip.git .
+            else
+              git fetch origin production
+              git reset --hard origin/production
+            fi
 
-            # Inject .env file
-            echo "$ENV_FILE" > .env
-            chmod 600 .env
+            # Inject runtime environment variables
+            if [ -n "$ENV_FILE" ]; then
+              echo "$ENV_FILE" > .env
+              chmod 600 .env
+            fi
 
             # Authenticate to GHCR
             echo "$GHCR_PAT" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
